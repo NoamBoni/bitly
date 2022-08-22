@@ -1,10 +1,23 @@
 import express from 'express';
+import { Sequelize } from 'sequelize';
+import dotenv from 'dotenv';
 
 const app = express();
-const port = 3000;
 
+app.use(express.json());
+
+dotenv.config({ path: './.env' });
+
+const sequelize = new Sequelize(process.env.DB_URI);
+
+sequelize
+    .authenticate()
+    .then(_ => console.log('Connection has been established successfully.'))
+    .catch(err => console.log(err));
+
+export { sequelize };
+
+const port = 8000;
 app.listen(port, () => {
-    console.log(
-        `Timezones by location application is running on port ${port}.`
-    );
+    console.log(`application is running on port ${port}.`);
 });
