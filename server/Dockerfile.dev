@@ -2,13 +2,14 @@ FROM golang:1.19-alpine
 
 WORKDIR /usr/app
 
-# COPY . .
-# COPY ./go.mod .
+COPY ./go.mod .
+COPY ./go.sum .
 
-# COPY ./go.sum .
+# RUN go get . 
 
-# RUN go get .
+# CMD ["go","run","."]
+RUN apk add --update tzdata \
+    git;
+RUN go install github.com/pilu/fresh@latest
 
-# VOLUME [ "." ]
-
-CMD ["go", "run", "."]
+CMD ["fresh"]

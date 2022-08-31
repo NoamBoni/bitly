@@ -4,14 +4,19 @@ services:
         image: 'postgres'
         restart: always
         environment:
+            - POSTGRES_DB=bitly
             - POSTGRES_USER=postgres
             - POSTGRES_PASSWORD=postgres
-    server:
+        volumes:
+            - ./sql/:/docker-entrypoint-initdb.d/
+
+    go:
+        image: 'noamboni55/bitlyserver'
         restart: always
         build:
             context: .
             dockerfile: './Dockerfile.dev'
         ports:
-            - '8000:8000'
+            - '8000:8080'
         volumes:
             - '.:/usr/app'
