@@ -42,3 +42,10 @@ func (u *User) SelectByEmail() error {
 	}
 	return nil
 }
+
+func (u *User) SelectById() error {
+	if err := Db.Model(u).Column("*").Where("id = ?",u.Id).Select(); err != nil {
+		return err
+	}
+	return nil
+}

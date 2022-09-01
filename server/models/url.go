@@ -8,8 +8,8 @@ import (
 type Url struct {
 	Id           int       `json:"id"`
 	Original_url string    `json:"original_url" pg:",notnull" binding:"required"`
-	Modified_url string    `json:"modified_url" pg:",notnull" binding:"required"`
-	User_id      string    `json:"user_id" pg:",notnull"`
+	Modified_url string    `json:"modified_url" pg:",unique,notnull" binding:"required"`
+	User_id      string    `json:"user_id" pg:",notnull fk:user_id on_delete:CASCADE"`
 	CreatedAt    time.Time `pg:"default:now()"`
 }
 
