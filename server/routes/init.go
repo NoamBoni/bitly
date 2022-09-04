@@ -10,6 +10,7 @@ func CreateRouter() *gin.Engine{
 	router.Use(gin.CustomRecovery(controllers.RecoveryMiddleware))
 	addAuthRoutes(router)
 	router.Use(controllers.AuthMiddleware)
+	addURLRoutes(router)
 	
 	return router
 }
