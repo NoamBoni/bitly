@@ -9,5 +9,6 @@ func addURLRoutes(router *gin.Engine){
 	urlRoutes := router.Group("/url")
 	{
 		urlRoutes.POST("/",urls.CreateURL)
+		urlRoutes.PUT("/",urls.UpdateURL)
 	}
 }

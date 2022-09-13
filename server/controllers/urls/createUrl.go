@@ -1,7 +1,6 @@
 package urls
 
 import (
-	"errors"
 	"fmt"
 	"math/rand"
 	"time"
@@ -14,10 +13,9 @@ import (
 const length = 8
 
 func CreateURL(ctx *gin.Context) {
-	userId, exists := ctx.Get("user-id")
-	id := userId.(int)
-	if !exists {
-		helpers.SendError(ctx, errors.New("something's wrong, try again later"), 500)
+	userId, err := helpers.GetUserId(ctx)
+	if err != nil {
+		helpers.SendError(ctx, err, 500)
 		return
 	}
 	var newUrl models.Url
@@ -25,13 +23,13 @@ func CreateURL(ctx *gin.Context) {
 		helpers.SendError(ctx, err, 400)
 		return
 	}
-	newUrl.User_id = id
+	newUrl.User_id = userId
 	newUrl.Modified_url = createRandomString()
 	if err := newUrl.Insert(); err != nil {
 		helpers.SendError(ctx, err, 500)
 		return
 	}
-	if urls, err := models.GetUrlsByUserId(id); err != nil {
+	if urls, err := models.GetUrlsByUserId(userId); err != nil {
 		helpers.SendError(ctx, err, 500)
 		return
 	} else {

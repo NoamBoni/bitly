@@ -27,7 +27,7 @@ func Login(ctx *gin.Context) {
 		helpers.SendError(ctx, err, 403)
 		return
 	}
-	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.Password)); err != nil {
+	if err := bcrypt.CompareHashAndPassword([]byte(*user.Password), []byte(body.Password)); err != nil {
 		helpers.SendError(ctx, err, 403)
 		return
 	}
@@ -36,7 +36,7 @@ func Login(ctx *gin.Context) {
 		return
 	} else {
 		SignCookie(ctx, "token", token)
-		user.Password = ""
+		user.Password = nil
 		ctx.JSON(http.StatusOK, gin.H{"data": user})
 	}
 }
